@@ -5,7 +5,9 @@ import {
   GET_ALL_TABLES_FAILURE
 } from "./actions";
 
-import { TablesReducerState } from "./types";
+import { ADD_FAV, REMOVE_FAV, CLEAR_ALL_FAV } from "../favourites/actions";
+
+import { TablesReducerState, Currency } from "./types";
 
 export const initialState: TablesReducerState = {
   loading: false,
@@ -37,6 +39,42 @@ export default function reducer(state = initialState, action: any) {
         ...state,
         tables: [...state.tables, ...action.payload],
         progress: state.progress += action.progress
+      };
+    case ADD_FAV:
+      return {
+        ...state,
+        tables: state.tables.map((currency: Currency) => {
+          if (action.payload.code === currency.code) {
+            return {
+              ...currency,
+              isFav: true
+            };
+          }
+          return currency;
+        })
+      };
+    case REMOVE_FAV:
+      return {
+        ...state,
+        tables: state.tables.map((currency: Currency) => {
+          if (action.payload.code === currency.code) {
+            return {
+              ...currency,
+              isFav: false
+            };
+          }
+          return currency;
+        })
+      };
+    case CLEAR_ALL_FAV:
+      return {
+        ...state,
+        tables: state.tables.map((currency: Currency) => {
+          return {
+            ...currency,
+            isFav: false
+          };
+        })
       };
     default:
       return state;
