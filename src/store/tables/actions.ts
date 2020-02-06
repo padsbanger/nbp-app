@@ -9,7 +9,7 @@ export const GET_ALL_TABLES = "GET_ALL_TABLES";
 export const GET_ALL_TABLES_SUCCESS = "GET_ALL_TABLES_SUCCESS";
 export const GET_ALL_TABLES_FAILURE = "GET_ALL_TABLES_FAILURE";
 
-const tables = ["A", "B", "C"];
+export const tables = ["A", "B", "C"];
 const progressStep = 100 / tables.length;
 
 export function getTable(tableCode: string) {

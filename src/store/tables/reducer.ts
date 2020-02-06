@@ -23,7 +23,8 @@ export default function reducer(state = initialState, action: any) {
     case GET_ALL_TABLES_SUCCESS:
       return {
         ...state,
-        loading: false
+        loading: false,
+        progress: 100
       };
     case GET_ALL_TABLES_FAILURE:
       return {
