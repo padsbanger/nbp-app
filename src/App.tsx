@@ -1,7 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getTables } from "./store/tables/actions";
-import { addFav, removeFav } from "./store/favourites/actions";
+import {
+  addFav,
+  removeFav,
+  toggleFav,
+  clearAllFav
+} from "./store/favourites/actions";
 
 import "./App.css";
 
@@ -15,6 +20,8 @@ interface AppProps {
   getTables: Function;
   addFav: Function;
   removeFav: Function;
+  toggleFav: Function;
+  clearAllFav: Function;
   tables: Currency[];
   progress: number;
   loading: Boolean;
@@ -27,34 +34,40 @@ class App extends React.Component<AppProps> {
   }
 
   render() {
-    const {
-      tables,
-      progress,
-      loading,
-      favourites,
-      addFav,
-      removeFav
-    } = this.props;
+    const { tables, progress, loading, favourites, toggleFav } = this.props;
     return (
-      <>
-        <h1>Currency list</h1>
-        <Grid container justify="center">
-          <Grid xs={12} sm={6} item>
-            {loading ? null : (
-              <TablesList
-                tables={tables}
-                progress={progress}
-                loading={loading}
-                addFav={addFav}
-                removeFav={removeFav}
-              />
+      <div style={{ display: "flex" }}>
+        <div style={{ flex: 1 }}>
+          <h1>
+            <span>💱</span> Currency list
+          </h1>
+          {loading ? null : (
+            <TablesList
+              tables={tables}
+              progress={progress}
+              loading={loading}
+              toggleFav={toggleFav}
+            />
+          )}
+        </div>
+        <div style={{ flex: 2 }}>
+          <h1>
+            <span>❤️</span> Favourites list
+            {favourites.length ? (
+              <button
+                onClick={() => {
+                  this.props.clearAllFav();
+                }}
+              >
+                Clear the list
+              </button>
+            ) : (
+              ""
             )}
-          </Grid>
-          <Grid xs={12} sm={6} item>
-            <FavList favourites={favourites} />
-          </Grid>
-        </Grid>
-      </>
+          </h1>
+          <FavList favourites={favourites} toggleFav={toggleFav} />
+        </div>
+      </div>
     );
   }
 }
@@ -71,7 +84,9 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = {
   getTables,
   addFav,
-  removeFav
+  removeFav,
+  toggleFav,
+  clearAllFav
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

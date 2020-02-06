@@ -5,14 +5,20 @@ import {
   GET_ALL_TABLES_FAILURE
 } from "./actions";
 
-import { ADD_FAV, REMOVE_FAV, CLEAR_ALL_FAV } from "../favourites/actions";
+import {
+  ADD_FAV,
+  REMOVE_FAV,
+  CLEAR_ALL_FAV,
+  TOGGLE_FAV
+} from "../favourites/actions";
 
 import { TablesReducerState, Currency } from "./types";
 
 export const initialState: TablesReducerState = {
   loading: false,
   progress: 0,
-  tables: []
+  tables: [],
+  fileredTables: []
 };
 
 export default function reducer(state = initialState, action: any) {
@@ -26,7 +32,8 @@ export default function reducer(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
-        progress: 100
+        progress: 100,
+        fileredTables: state.tables
       };
     case GET_ALL_TABLES_FAILURE:
       return {
@@ -40,28 +47,18 @@ export default function reducer(state = initialState, action: any) {
         tables: [...state.tables, ...action.payload],
         progress: state.progress += action.progress
       };
-    case ADD_FAV:
+    case TOGGLE_FAV:
       return {
         ...state,
         tables: state.tables.map((currency: Currency) => {
           if (action.payload.code === currency.code) {
-            return {
-              ...currency,
-              isFav: true
-            };
+            return action.payload;
           }
           return currency;
-        })
-      };
-    case REMOVE_FAV:
-      return {
-        ...state,
-        tables: state.tables.map((currency: Currency) => {
+        }),
+        fileredTables: state.tables.map((currency: Currency) => {
           if (action.payload.code === currency.code) {
-            return {
-              ...currency,
-              isFav: false
-            };
+            return action.payload;
           }
           return currency;
         })
@@ -70,6 +67,12 @@ export default function reducer(state = initialState, action: any) {
       return {
         ...state,
         tables: state.tables.map((currency: Currency) => {
+          return {
+            ...currency,
+            isFav: false
+          };
+        }),
+        fileredTables: state.tables.map((currency: Currency) => {
           return {
             ...currency,
             isFav: false

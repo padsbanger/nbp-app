@@ -9,4 +9,5 @@ export interface TablesReducerState {
   loading: Boolean;
   progress: number;
   tables: Currency[];
+  fileredTables: Currency[];
 }

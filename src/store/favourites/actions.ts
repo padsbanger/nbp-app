@@ -2,6 +2,7 @@ import { Currency } from "../tables/types";
 
 export const ADD_FAV = "ADD_FAV";
 export const REMOVE_FAV = "REMOVE_FAV";
+export const TOGGLE_FAV = "TOGGLE_FAV";
 export const CLEAR_ALL_FAV = "CLEAR_ALL_FAV";
 
 export function addFav(currency: Currency) {
@@ -21,5 +22,12 @@ export function removeFav(currency: Currency) {
 export function clearAllFav() {
   return {
     type: CLEAR_ALL_FAV
+  };
+}
+
+export function toggleFav(currency: Currency) {
+  return {
+    type: TOGGLE_FAV,
+    payload: currency
   };
 }

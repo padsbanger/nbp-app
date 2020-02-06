@@ -8,13 +8,20 @@ interface TablesListItemProps {
 
 export const TablesListItem = (props: TablesListItemProps) => {
   return (
-    <div
+    <li
+      style={{
+        padding: "5px"
+      }}
       onClick={() => {
-        props.toggleFav(props.currency);
+        props.toggleFav({
+          ...props.currency,
+          isFav: props.currency.isFav ? false : true
+        });
       }}
     >
-      Currency: {props.currency.code} Price: {props.currency.mid}
-    </div>
+      [{props.currency.code}] - {props.currency.currency}{" "}
+      {props.currency.isFav ? <span>❤️</span> : ""}
+    </li>
   );
 };
 
