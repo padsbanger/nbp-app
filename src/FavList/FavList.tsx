@@ -19,11 +19,7 @@ class FavList extends React.Component<FavListProps> {
   }
 
   render() {
-    return (
-      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-        {this.renderTablesList()}
-      </ul>
-    );
+    return <ul>{this.renderTablesList()}</ul>;
   }
 }
 

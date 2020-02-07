@@ -1,16 +1,27 @@
 import reducer, { initialState } from "../../../store/tables/reducer";
 import {
-  GET_TABLE,
   GET_TABLE_SUCCESS,
-  GET_TABLE_ERROR,
-  getTable,
-  getTables,
-  tables,
   GET_ALL_TABLES,
   GET_ALL_TABLES_FAILURE,
-  GET_ALL_TABLES_SUCCESS
+  GET_ALL_TABLES_SUCCESS,
+  TOGGLE_FAV,
+  CLEAR_ALL_FAV
 } from "../../../store/tables/actions";
 import { Currency, TablesReducerState } from "../../../store/tables/types";
+
+const currencyMock: Currency = {
+  code: "USD",
+  currency: "Dollar",
+  mid: 3.14,
+  isFav: false
+};
+
+const currencyMock1: Currency = {
+  code: "EUR",
+  currency: "Euro",
+  mid: 5.13,
+  isFav: false
+};
 
 describe("store/tables/reducer", () => {
   const init: TablesReducerState = initialState;
@@ -55,5 +66,31 @@ describe("store/tables/reducer", () => {
     });
 
     expect(response.progress).toBe(1);
+  });
+
+  test("Should mark currency as fav", () => {
+    const response = reducer(
+      { ...init, tables: [currencyMock, currencyMock1] },
+      {
+        type: TOGGLE_FAV,
+        payload: currencyMock
+      }
+    );
+
+    expect(response.tables[0].isFav).toBe(true);
+    expect(response.tables[1].isFav).toBe(false);
+  });
+
+  test("Should clear all fav currency", () => {
+    const response = reducer(
+      { ...init, tables: [currencyMock, currencyMock1] },
+      {
+        type: CLEAR_ALL_FAV,
+        payload: currencyMock
+      }
+    );
+
+    expect(response.tables[0].isFav).toBe(false);
+    expect(response.tables[1].isFav).toBe(false);
   });
 });

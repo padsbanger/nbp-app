@@ -2,23 +2,17 @@ import {
   GET_TABLE_SUCCESS,
   GET_ALL_TABLES,
   GET_ALL_TABLES_SUCCESS,
-  GET_ALL_TABLES_FAILURE
-} from "./actions";
-
-import {
-  ADD_FAV,
-  REMOVE_FAV,
+  GET_ALL_TABLES_FAILURE,
   CLEAR_ALL_FAV,
   TOGGLE_FAV
-} from "../favourites/actions";
+} from "./actions";
 
 import { TablesReducerState, Currency } from "./types";
 
 export const initialState: TablesReducerState = {
   loading: false,
   progress: 0,
-  tables: [],
-  fileredTables: []
+  tables: []
 };
 
 export default function reducer(state = initialState, action: any) {
@@ -32,8 +26,7 @@ export default function reducer(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
-        progress: 100,
-        fileredTables: state.tables
+        progress: 100
       };
     case GET_ALL_TABLES_FAILURE:
       return {
@@ -52,13 +45,10 @@ export default function reducer(state = initialState, action: any) {
         ...state,
         tables: state.tables.map((currency: Currency) => {
           if (action.payload.code === currency.code) {
-            return action.payload;
-          }
-          return currency;
-        }),
-        fileredTables: state.tables.map((currency: Currency) => {
-          if (action.payload.code === currency.code) {
-            return action.payload;
+            return {
+              ...action.payload,
+              isFav: !currency.isFav
+            };
           }
           return currency;
         })
@@ -67,12 +57,6 @@ export default function reducer(state = initialState, action: any) {
       return {
         ...state,
         tables: state.tables.map((currency: Currency) => {
-          return {
-            ...currency,
-            isFav: false
-          };
-        }),
-        fileredTables: state.tables.map((currency: Currency) => {
           return {
             ...currency,
             isFav: false

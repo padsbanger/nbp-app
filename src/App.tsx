@@ -1,12 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getTables } from "./store/tables/actions";
-import {
-  addFav,
-  removeFav,
-  toggleFav,
-  clearAllFav
-} from "./store/favourites/actions";
+import { toggleFav, clearAllFav } from "./store/tables/actions";
 
 import "./App.css";
 
@@ -14,12 +9,9 @@ import TablesList from "./TablesList/TablesList";
 import FavList from "./FavList/FavList";
 import { State } from "./store/combineReducers";
 import { Currency } from "./store/tables/types";
-import { Grid } from "@material-ui/core";
 
 interface AppProps {
   getTables: Function;
-  addFav: Function;
-  removeFav: Function;
   toggleFav: Function;
   clearAllFav: Function;
   tables: Currency[];
@@ -37,11 +29,23 @@ class App extends React.Component<AppProps> {
     const { tables, progress, loading, favourites, toggleFav } = this.props;
     return (
       <div style={{ display: "flex" }}>
-        <div style={{ flex: 1 }}>
+        <div
+          style={{
+            flex: 1,
+            padding: "0 5px",
+            overflow: "auto",
+            height: "100vh"
+          }}
+        >
           <h1>
-            <span>💱</span> Currency list
+            <span role="img" aria-label="Currency">
+              💱
+            </span>{" "}
+            Currency list
           </h1>
-          {loading ? null : (
+          {loading ? (
+            <div id="loading" />
+          ) : (
             <TablesList
               tables={tables}
               progress={progress}
@@ -50,9 +54,14 @@ class App extends React.Component<AppProps> {
             />
           )}
         </div>
-        <div style={{ flex: 2 }}>
+        <div
+          style={{ flex: 2, borderLeft: "1px solid #ccc", padding: "0 5px" }}
+        >
           <h1>
-            <span>❤️</span> Favourites list
+            <span role="img" aria-label="Favourites">
+              ❤️
+            </span>{" "}
+            Favourites list
             {favourites.length ? (
               <button
                 onClick={() => {
@@ -83,8 +92,6 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
   getTables,
-  addFav,
-  removeFav,
   toggleFav,
   clearAllFav
 };

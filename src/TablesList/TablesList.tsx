@@ -1,8 +1,6 @@
 import React from "react";
-import Paper from "@material-ui/core/Paper";
 import { Currency } from "../store/tables/types";
 import TablesListItem from "./TablesListItem";
-import TextField from "@material-ui/core/TextField";
 
 interface TablesListProps {
   tables: Currency[];
@@ -14,19 +12,19 @@ interface TablesListProps {
 class FavList extends React.Component<TablesListProps> {
   renderTablesList() {
     const { toggleFav } = this.props;
-    return this.props.tables.map((currency: Currency, key) => {
+    return this.props.tables.map((currency: Currency) => {
       return (
-        <TablesListItem key={key} currency={currency} toggleFav={toggleFav} />
+        <TablesListItem
+          key={currency.code}
+          currency={currency}
+          toggleFav={toggleFav}
+        />
       );
     });
   }
 
   render() {
-    return (
-      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-        {this.renderTablesList()}
-      </ul>
-    );
+    return <ul>{this.renderTablesList()}</ul>;
   }
 }
 

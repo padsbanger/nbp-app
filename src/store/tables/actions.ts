@@ -1,6 +1,8 @@
 import { createHttpClient } from "../createHttpClient";
 import { Dispatch } from "redux";
 
+import { Currency } from "./types";
+
 export const GET_TABLE = "GET_TABLE";
 export const GET_TABLE_SUCCESS = "GET_TABLE_SUCCESS";
 export const GET_TABLE_ERROR = "GET_TABLE_ERROR";
@@ -9,8 +11,24 @@ export const GET_ALL_TABLES = "GET_ALL_TABLES";
 export const GET_ALL_TABLES_SUCCESS = "GET_ALL_TABLES_SUCCESS";
 export const GET_ALL_TABLES_FAILURE = "GET_ALL_TABLES_FAILURE";
 
+export const TOGGLE_FAV = "TOGGLE_FAV";
+export const CLEAR_ALL_FAV = "CLEAR_ALL_FAV";
+
 export const tables = ["A", "B"];
 const progressStep = 100 / tables.length;
+
+export function clearAllFav() {
+  return {
+    type: CLEAR_ALL_FAV
+  };
+}
+
+export function toggleFav(currency: Currency) {
+  return {
+    type: TOGGLE_FAV,
+    payload: currency
+  };
+}
 
 export function getTable(tableCode: string) {
   return (dispatch: Dispatch, getState: Function): any => {
